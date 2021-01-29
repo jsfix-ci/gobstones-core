@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "rootDir": "./src",
+        "esModuleInterop": true,
+        "allowJs": true,
+        "sourceMap": true,
+        "composite": true,
+        "declaration": true,
+        "declarationMap": true,
+        "declarationDir": "dist/typings",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "stripInternal": true
+
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}
