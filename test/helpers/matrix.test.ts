@@ -1,8 +1,9 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
+
 import { Matrix } from '../../src/helpers/matrix';
 
-describe(`A Matrix should`, () => {
-    test(`Contain as much columns as the ones indicated on creation`, () => {
+describe(`Matrix`, () => {
+    it(`Contains as much columns as the ones indicated on creation`, () => {
         const matrixA = Matrix(3, 4);
         expect(matrixA.length).toBe(3);
 
@@ -10,7 +11,7 @@ describe(`A Matrix should`, () => {
         expect(matrixB.length).toBe(6);
     });
 
-    test(`Contain as much rows in each column as the ones indicated on creation`, () => {
+    it(`Contains as much rows in each column as the ones indicated on creation`, () => {
         const matrixA = Matrix(3, 4);
         for (const column of matrixA) {
             expect(column.length).toBe(4);
@@ -22,7 +23,7 @@ describe(`A Matrix should`, () => {
         }
     });
 
-    test(`Contain undefined in each position if no value function given`, () => {
+    it(`Contains undefined in each position if no value function given`, () => {
         const matrixA = Matrix(3, 4);
         for (const column of matrixA) {
             for (const value of column) {
@@ -38,7 +39,7 @@ describe(`A Matrix should`, () => {
         }
     });
 
-    test(`Contain the given value in each position if a function given`, () => {
+    it(`Contains the given value in each position if a function given`, () => {
         const matrixA = Matrix(3, 4, () => 'A');
         for (const column of matrixA) {
             for (const value of column) {
@@ -55,7 +56,7 @@ describe(`A Matrix should`, () => {
         }
     });
 
-    test(`Allow to access elements by x first, then y`, () => {
+    it(`Allows to access elements by x first, then y`, () => {
         const matrixA = Matrix(3, 4, (i, j) => [i, j]);
         for (let i = 0; i < matrixA.length; i++) {
             for (let j = 0; j < matrixA[i].length; j++) {
@@ -64,7 +65,7 @@ describe(`A Matrix should`, () => {
         }
     });
 
-    test(`Be an array, and have arrays in each column`, () => {
+    it(`Be an array, and have arrays in each column`, () => {
         const matrixA = Matrix(3, 4, (i, j) => [i, j]);
         expect(matrixA).toBeInstanceOf(Array);
         for (const column of matrixA) {
@@ -72,7 +73,7 @@ describe(`A Matrix should`, () => {
         }
     });
 
-    test(`Throw an error if width or height are non positive`, () => {
+    it(`Throws an error if width or height are non positive`, () => {
         expect(() => Matrix(0, 4)).toThrow();
         expect(() => Matrix(3, 0)).toThrow();
         expect(() => Matrix(-3, 4)).toThrow();

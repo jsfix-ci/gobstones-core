@@ -165,6 +165,16 @@ export interface IObjectExpectation<T> extends IGenericExpectation<T> {
      */
     toHavePropertyCount(count: number): this & IFinishedExpectation;
     /**
+     * Answer if an object has  at least all keys in the least. Combine with
+     * toHaveNoOtherThan to ensure exact key existence
+     */
+    toHaveAtLeast(keys: string[]): this & IFinishedExpectation;
+    /**
+     * Answer if an object has no other than the given keys (although not all given
+     * need to be present). Combine with toHaveAtLeast to ensure exact key existence
+     */
+    toHaveNoOtherThan(keys: string[]): this & IFinishedExpectation;
+    /**
      * Answer if the actual element has a property with the given name.
      */
     toHaveProperty(propertyName: string): this & IFinishedExpectation;

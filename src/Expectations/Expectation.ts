@@ -1,3 +1,5 @@
+import { MatcherCall, Matchers } from './Matchers';
+
 /**
  * This module provides the [[Expectation]] class that implements
  * all interfaces for expectations.
@@ -7,7 +9,6 @@
  * @packageDocumentation
  */
 import { FinishedExpectation } from './FinishedExpectation';
-import { MatcherCall, Matchers } from './Matchers';
 import { IFinishedExpectation } from './Interfaces';
 
 export class Expectation<T> extends FinishedExpectation {
@@ -191,11 +192,18 @@ export class Expectation<T> extends FinishedExpectation {
     public toHavePropertyCount(count: number): this & IFinishedExpectation {
         return this.runMatcher('toHavePropertyCount', [count]);
     }
+    /** @inheritdoc [[IObjectExpectancy.toHaveAtLeast]] */
+    public toHaveAtLeast(keys: string[]): this & IFinishedExpectation {
+        return this.runMatcher('toHaveAtLeast', keys, false);
+    }
+    /** @inheritdoc [[IObjectExpectancy.toHaveNoOtherThan]] */
+    public toHaveNoOtherThan(keys: string[]): this & IFinishedExpectation {
+        return this.runMatcher('toHaveNoOtherThan', keys, false);
+    }
     /** @inheritdoc [[IObjectExpectancy.toHaveProperty]] */
     public toHaveProperty(propertyName: string): this & IFinishedExpectation {
         return this.runMatcher('toHaveProperty', [propertyName]);
     }
-
     /** @inheritdoc [[IObjectExpectancy.toBeInstanceOf]] */
     // eslint-disable-next-line @typescript-eslint/ban-types
     public toBeInstanceOf(classConstructor: Function): this & IFinishedExpectation {
@@ -235,8 +243,8 @@ export class Expectation<T> extends FinishedExpectation {
      * @param matcherName The matcher name to run
      * @param args The arguments to pass to the matcher
      */
-    protected runMatcher(matcherName: string, args: any[]): this {
-        const matcherArgs = [this.element, ...args];
+    protected runMatcher(matcherName: string, args: any[], sparse: boolean = true): this {
+        const matcherArgs = sparse ? [this.element, ...args] : [this.element, args];
         const matcherResult = Matchers[matcherName].call(this, ...matcherArgs);
         const result = this.isNot ? !matcherResult : matcherResult;
         this.states.push({

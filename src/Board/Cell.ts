@@ -1,10 +1,11 @@
-import { TypedEmitter } from '../TypedEmitter';
-import { expect } from '../Expectations';
-import { CellInfo, CellLocation, CellDataDefinition } from './BoardDefinition';
+import { CellDataDefinition, CellInfo, CellLocation } from './BoardDefinition';
 import { InvalidStonesAmount, StonesChangeActionAttempt } from './BoardErrors';
+
 import { Board } from './Board';
 import { Color } from './Color';
 import { Direction } from './Direction';
+import { TypedEmitter } from '../TypedEmitter';
+import { expect } from '../Expectations';
 
 /**
  * This object contains the default values for a [[Board]] and it's cells.
@@ -133,10 +134,10 @@ export class Cell extends TypedEmitter<CellEvents> implements CellInfo {
         this.locationX = cellInfo.x;
         this.locationY = cellInfo.y;
 
-        this.blueStones = cellInfo?.[Color.Blue] ?? Defaults[Color.Blue];
-        this.blackStones = cellInfo?.[Color.Black] ?? Defaults[Color.Black];
-        this.redStones = cellInfo?.[Color.Red] ?? Defaults[Color.Red];
-        this.greenStones = cellInfo?.[Color.Green] ?? Defaults[Color.Green];
+        this.blueStones = cellInfo[Color.Blue] ?? Defaults[Color.Blue];
+        this.blackStones = cellInfo[Color.Black] ?? Defaults[Color.Black];
+        this.redStones = cellInfo[Color.Red] ?? Defaults[Color.Red];
+        this.greenStones = cellInfo[Color.Green] ?? Defaults[Color.Green];
     }
 
     /* ************* Accessors ************** */
@@ -209,6 +210,7 @@ export class Cell extends TypedEmitter<CellEvents> implements CellInfo {
     public get a(): number {
         return this.getStonesOf(Color.Blue);
     }
+    /* istanbul ignore next */
     public set a(value: number) {
         this.setStonesOf(Color.Blue, value);
     }
@@ -241,6 +243,7 @@ export class Cell extends TypedEmitter<CellEvents> implements CellInfo {
     public get n(): number {
         return this.getStonesOf(Color.Black);
     }
+    /* istanbul ignore next */
     public set n(value: number) {
         this.setStonesOf(Color.Black, value);
     }
@@ -273,6 +276,7 @@ export class Cell extends TypedEmitter<CellEvents> implements CellInfo {
     public get r(): number {
         return this.getStonesOf(Color.Red);
     }
+    /* istanbul ignore next */
     public set r(value: number) {
         this.setStonesOf(Color.Red, value);
     }
@@ -305,6 +309,7 @@ export class Cell extends TypedEmitter<CellEvents> implements CellInfo {
     public get v(): number {
         return this.getStonesOf(Color.Green);
     }
+    /* istanbul ignore next */
     public set v(value: number) {
         this.setStonesOf(Color.Green, value);
     }

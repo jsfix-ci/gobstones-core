@@ -12,6 +12,9 @@ const commonConfig = {
         ]
     },
     resolve: {
+        alias: {
+            '@jest/extended': './jest.d.ts'
+        },
         extensions: ['.tsx', '.ts', '.js']
     }
 };

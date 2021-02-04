@@ -194,6 +194,26 @@ export class Matchers {
                 amount
         );
     }
+    /** Answer if an object has  at least all keys in the least. Combine with
+     * toHaveNoOtherThan to ensure exact key existence */
+    public static toHaveAtLeast(actual: any, keys: string[]): boolean {
+        if (typeof actual !== 'object') return false;
+        for (const key of keys) {
+            if (!actual[key]) return false;
+        }
+        return true;
+    }
+    /** Answer if an object has no other than the given keys (although not all given
+     * need to be present). Combine with toHaveAtLeast to ensure exact key existence */
+    public static toHaveNoOtherThan(actual: any, keys: string[]): boolean {
+        if (typeof actual !== 'object') return false;
+        for (const key of Object.keys(actual)) {
+            if (keys.indexOf(key) < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
     /** Answer if the actual element has a property with the given name. */
     public static toHaveProperty(actual: any, propertyName: string): boolean {
         return (

@@ -1,12 +1,12 @@
-import { describe, test, expect, beforeEach } from '@jest/globals';
 import { Board, Cell, Color, Direction } from '../../src/Board';
+import { beforeEach, describe, expect, it } from '@jest/globals';
 
 let board: Board;
 let headCell: Cell;
 let cornerCell: Cell;
 let originCell: Cell;
 
-describe(`A Board should`, () => {
+describe(`Cell`, () => {
     beforeEach(() => {
         // 5x7 board with head in center, red in first row,
         // green in first column, 5 blue and 3 black in center
@@ -34,7 +34,7 @@ describe(`A Board should`, () => {
         originCell = board.getCell(0, 0);
     });
 
-    test(`Answer with the correct location as within the board`, () => {
+    it(`Answers with the correct location as within the board`, () => {
         expect(headCell.x).toBe(2);
         expect(headCell.y).toBe(3);
         expect(headCell.location).toStrictEqual([2, 3]);
@@ -44,7 +44,7 @@ describe(`A Board should`, () => {
         expect(cornerCell.location).toStrictEqual([4, 6]);
     });
 
-    test(`Answer with the correct amount of stones for each color`, () => {
+    it(`Answers with the correct amount of stones for each color`, () => {
         expect(headCell.getStonesOf(Color.Blue)).toBe(5);
         expect(headCell.getStonesOf(Color.Black)).toBe(3);
         expect(headCell.getStonesOf(Color.Red)).toBe(0);
@@ -56,7 +56,7 @@ describe(`A Board should`, () => {
         expect(cornerCell.getStonesOf(Color.Green)).toBe(0);
     });
 
-    test(`Allow to access colors throw properties for retro compatibility`, () => {
+    it(`Allows to access colors throw properties for retro compatibility`, () => {
         expect(headCell.a).toBe(headCell.getStonesOf(Color.Blue));
         expect(headCell.n).toBe(headCell.getStonesOf(Color.Black));
         expect(headCell.r).toBe(headCell.getStonesOf(Color.Red));
@@ -68,13 +68,13 @@ describe(`A Board should`, () => {
         expect(cornerCell.v).toBe(cornerCell.getStonesOf(Color.Green));
     });
 
-    test(`Answer with the correct amount of stones for any color`, () => {
+    it(`Answers with the correct amount of stones for any color`, () => {
         expect(headCell.getStonesAmount()).toBe(8);
 
         expect(cornerCell.getStonesAmount()).toBe(0);
     });
 
-    test(`Answer with true when it has stones of a given color or false otherwise`, () => {
+    it(`Answers with true when it has stones of a given color or false otherwise`, () => {
         expect(headCell.hasStonesOf(Color.Blue)).toBe(true);
         expect(headCell.hasStonesOf(Color.Black)).toBe(true);
         expect(headCell.hasStonesOf(Color.Red)).toBe(false);
@@ -86,17 +86,17 @@ describe(`A Board should`, () => {
         expect(cornerCell.hasStonesOf(Color.Green)).toBe(false);
     });
 
-    test(`Answer to isEmpty correctly`, () => {
+    it(`Answers to isEmpty correctly`, () => {
         expect(headCell.isEmpty()).toBe(false);
         expect(cornerCell.isEmpty()).toBe(true);
     });
 
-    test(`Answer to hasStones correctly`, () => {
+    it(`Answers to hasStones correctly`, () => {
         expect(headCell.hasStones()).toBe(true);
         expect(cornerCell.hasStones()).toBe(false);
     });
 
-    test(`Empty a cell when empty is called`, () => {
+    it(`Empties when empty is called`, () => {
         headCell.empty();
         expect(headCell.isEmpty()).toBe(true);
 
@@ -104,7 +104,7 @@ describe(`A Board should`, () => {
         expect(cornerCell.isEmpty()).toBe(true);
     });
 
-    test(`Answer if it is the head cell correctly, depending on the board`, () => {
+    it(`Answers if it is the head cell correctly, depending on the board`, () => {
         expect(headCell.isHeadLocation()).toBe(true);
         expect(cornerCell.isHeadLocation()).toBe(false);
 
@@ -116,7 +116,7 @@ describe(`A Board should`, () => {
         expect(cornerCell.isHeadLocation()).toBe(true);
     });
 
-    test(`Set the amount of stones correctly for zero or positive values`, () => {
+    it(`Sets the amount of stones correctly for zero or positive values`, () => {
         headCell.setStonesOf(Color.Blue, 6);
         headCell.setStonesOf(Color.Black, 7);
         headCell.setStonesOf(Color.Red, 8);
@@ -148,7 +148,7 @@ describe(`A Board should`, () => {
         expect(headCell.getStonesOf(Color.Green)).toBe(99999);
     });
 
-    test(`Set the amount of stones correctly for really big values`, () => {
+    it(`Sets the amount of stones correctly for really big values`, () => {
         headCell.setStonesOf(Color.Blue, 2147483647);
         headCell.setStonesOf(Color.Black, 2 ** 31);
         headCell.setStonesOf(Color.Red, 2 ** 32);
@@ -162,7 +162,7 @@ describe(`A Board should`, () => {
         );
     });
 
-    test(`Throw an InvalidStonesAmount with the attempt set to SetStones with negatives`, () => {
+    it(`Throws an InvalidStonesAmount with the attempt set to SetStones with negatives`, () => {
         expect(() => headCell.setStonesOf(Color.Blue, -1)).toThrow();
         expect(() => headCell.setStonesOf(Color.Blue, -1000)).toThrow();
         expect(() => headCell.setStonesOf(Color.Blue, -1 * 2 ** 150)).toThrow();
@@ -187,7 +187,7 @@ describe(`A Board should`, () => {
         }
     });
 
-    test(`Add a stone adds one single stone if no amount is given`, () => {
+    it(`Adds a stone adds one single stone if no amount is given`, () => {
         headCell.addStones(Color.Blue);
         headCell.addStones(Color.Black);
         headCell.addStones(Color.Red);
@@ -199,7 +199,7 @@ describe(`A Board should`, () => {
         expect(headCell.getStonesOf(Color.Green)).toBe(1);
     });
 
-    test(`Add a stone adds the given amount of stones`, () => {
+    it(`Adds a stone adds the given amount of stones`, () => {
         headCell.addStones(Color.Blue, 3);
         headCell.addStones(Color.Black, 4);
         headCell.addStones(Color.Red, 5);
@@ -211,7 +211,7 @@ describe(`A Board should`, () => {
         expect(headCell.getStonesOf(Color.Green)).toBe(6);
     });
 
-    test(`Remove a stone removes one single stone if no amount is given`, () => {
+    it(`Removes a stone removes one single stone if no amount is given`, () => {
         headCell.removeStones(Color.Blue);
         headCell.removeStones(Color.Black);
 
@@ -219,7 +219,7 @@ describe(`A Board should`, () => {
         expect(headCell.getStonesOf(Color.Black)).toBe(2);
     });
 
-    test(`Remove a stone removes the given amount`, () => {
+    it(`Removes a stone removes the given amount`, () => {
         headCell.removeStones(Color.Blue, 3);
         headCell.removeStones(Color.Black, 2);
 
@@ -227,7 +227,7 @@ describe(`A Board should`, () => {
         expect(headCell.getStonesOf(Color.Black)).toBe(1);
     });
 
-    test(`Remove throws InvalidStonesAmount with RemoveStones if more than present removed`, () => {
+    it(`Removes throws InvalidStonesAmount with RemoveStones if more than present removed`, () => {
         expect(() => headCell.removeStones(Color.Blue, 6)).toThrow();
         expect(() => headCell.removeStones(Color.Black, 4)).toThrow();
         expect(() => headCell.removeStones(Color.Red, 1)).toThrow();
@@ -259,7 +259,7 @@ describe(`A Board should`, () => {
         }
     });
 
-    test(`Add throws InvalidStonesAmount with attempt AddStones if < 1 value given`, () => {
+    it(`Adds throws InvalidStonesAmount with attempt AddStones if < 1 value given`, () => {
         expect(() => headCell.addStones(Color.Blue, 0)).toThrow();
         expect(() => headCell.addStones(Color.Blue, -10)).toThrow();
 
@@ -277,7 +277,7 @@ describe(`A Board should`, () => {
         }
     });
 
-    test(`Remove throws InvalidStonesAmount with attempt RemoveStones if < 1 value given`, () => {
+    it(`Removes throws InvalidStonesAmount with attempt RemoveStones if < 1 value given`, () => {
         expect(() => headCell.removeStones(Color.Blue, 0)).toThrow();
         expect(() => headCell.removeStones(Color.Blue, -10)).toThrow();
 
@@ -295,7 +295,7 @@ describe(`A Board should`, () => {
         }
     });
 
-    test(`Answer correctly when asked if it's at border`, () => {
+    it(`Answers correctly when asked if it's at border`, () => {
         Direction.foreach((dir) => {
             expect(headCell.isAtBorderAt(Direction[dir])).toBe(false);
         });
@@ -311,7 +311,7 @@ describe(`A Board should`, () => {
         expect(originCell.isAtBorderAt(Direction.West)).toBe(true);
     });
 
-    test(`Answer correctly when asked for the neighbor`, () => {
+    it(`Answers correctly when asked for the neighbor`, () => {
         expect(headCell.neighborTo(Direction.North)).toBe(board.getCell(2, 4));
         expect(headCell.neighborTo(Direction.East)).toBe(board.getCell(3, 3));
         expect(headCell.neighborTo(Direction.South)).toBe(board.getCell(2, 2));
@@ -324,7 +324,7 @@ describe(`A Board should`, () => {
         expect(originCell.neighborTo(Direction.East)).toBe(board.getCell(1, 0));
     });
 
-    test(`Answer correctly when asked for the diagonal neighbor`, () => {
+    it(`Answers correctly when asked for the diagonal neighbor`, () => {
         // 2, 3
         expect(headCell.neighborDiagonalTo(Direction.North, Direction.East)).toBe(
             board.getCell(3, 4)
@@ -348,7 +348,7 @@ describe(`A Board should`, () => {
         );
     });
 
-    test(`Answer with undefined when neighbors do not exist`, () => {
+    it(`Answers with undefined when neighbors do not exist`, () => {
         expect(cornerCell.neighborTo(Direction.North)).toBe(undefined);
         expect(cornerCell.neighborTo(Direction.East)).toBe(undefined);
 
@@ -356,7 +356,7 @@ describe(`A Board should`, () => {
         expect(originCell.neighborTo(Direction.West)).toBe(undefined);
     });
 
-    test(`Answer with undefined when diagonal neighbor do not exist`, () => {
+    it(`Answers with undefined when diagonal neighbor do not exist`, () => {
         expect(cornerCell.neighborDiagonalTo(Direction.South, Direction.East)).toBe(undefined);
         expect(cornerCell.neighborDiagonalTo(Direction.North, Direction.West)).toBe(undefined);
         expect(cornerCell.neighborDiagonalTo(Direction.North, Direction.East)).toBe(undefined);
@@ -366,11 +366,11 @@ describe(`A Board should`, () => {
         expect(originCell.neighborDiagonalTo(Direction.South, Direction.East)).toBe(undefined);
     });
 
-    test(`Answer with orthogonal neighbors by default`, () => {
+    it(`Answers with orthogonal neighbors by default`, () => {
         expect(headCell.neighbors()).toStrictEqual(headCell.neighbors('orthogonal'));
     });
 
-    test(`Othogonal neighbors are neighbors to all directions in order if they exist`, () => {
+    it(`Answers neighbors are to all directions when orthogonal given`, () => {
         const headNeighbors = headCell.neighbors('orthogonal');
         expect(headNeighbors.length).toBe(4);
         expect(headNeighbors[0]).toBe(headCell.neighborTo(Direction.North));
@@ -389,7 +389,7 @@ describe(`A Board should`, () => {
         expect(originNeighbors[1]).toBe(originCell.neighborTo(Direction.East));
     });
 
-    test(`Diagonal neighbors are neighbors to all directions in order if they exist`, () => {
+    it(`Answers neighbors are to all corners when diagonal given`, () => {
         const headNeighbors = headCell.neighbors('diagonal');
         expect(headNeighbors.length).toBe(4);
         expect(headNeighbors[0]).toBe(headCell.neighborDiagonalTo(Direction.North, Direction.East));
@@ -410,7 +410,7 @@ describe(`A Board should`, () => {
         );
     });
 
-    test(`Both neighbors are neighbors to all directions in order if they exist`, () => {
+    it(`Answers neighbors are to all directions and corners when both given`, () => {
         const headNeighbors = headCell.neighbors('both');
         expect(headNeighbors.length).toBe(8);
         expect(headNeighbors[0]).toBe(headCell.neighborTo(Direction.North));
