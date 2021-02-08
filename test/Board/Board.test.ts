@@ -1,10 +1,11 @@
-import { describe, test, expect, beforeEach } from '@jest/globals';
-import { Matrix } from '../../src/helpers/matrix';
 import { Board, Cell, Color, Direction } from '../../src/Board';
+import { beforeEach, describe, expect, it } from '@jest/globals';
+
+import { Matrix } from '../../src/helpers/matrix';
 
 let board: Board;
 
-describe(`A Board should`, () => {
+describe(`Board`, () => {
     beforeEach(() => {
         // 5x7 board with head in center, red in first row,
         // green in first column, 5 blue and 3 black in center
@@ -29,16 +30,16 @@ describe(`A Board should`, () => {
         );
     });
 
-    test(`Answer it's format correctly`, () => {
+    it(`Answers it's format correctly`, () => {
         expect(board.format).toBe('GBB/1.0');
     });
 
-    test(`Answer it's size correctly`, () => {
+    it(`Answers it's size correctly`, () => {
         expect(board.width).toBe(5);
         expect(board.height).toBe(7);
     });
 
-    test(`Answer it's head position correctly`, () => {
+    it(`Answers it's head position correctly`, () => {
         expect(board.head[0]).toBe(2);
         expect(board.head[1]).toBe(3);
         expect(board.headX).toBe(2);
@@ -47,7 +48,7 @@ describe(`A Board should`, () => {
         expect(board.head[1]).toBe(board.headY);
     });
 
-    test(`Answer with a cell data correctly`, () => {
+    it(`Answers with a cell data correctly`, () => {
         // 0,0, origin cell
         expect(board.getCell(0, 0).x).toBe(0);
         expect(board.getCell(0, 0).y).toBe(0);
@@ -86,7 +87,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(4, 6).hasStonesOf(Color.Green)).toBe(false);
     });
 
-    test(`Answer with a column data correctly`, () => {
+    it(`Answers with a column data correctly`, () => {
         const firstColumn = board.getColumn(0);
         for (const cell of firstColumn) {
             expect(cell.hasStonesOf(Color.Green)).toBe(true);
@@ -104,7 +105,7 @@ describe(`A Board should`, () => {
         }
     });
 
-    test(`Answer with a row data correctly`, () => {
+    it(`Answers with a row data correctly`, () => {
         const firstRow = board.getRow(0);
         for (const cell of firstRow) {
             expect(cell.hasStonesOf(Color.Red)).toBe(true);
@@ -122,7 +123,7 @@ describe(`A Board should`, () => {
         }
     });
 
-    test(`Answer with all columns correctly`, () => {
+    it(`Answers with all columns correctly`, () => {
         const columns = board.getColumns();
         expect(columns.length).toBe(5);
         for (let i = 0; i < columns.length; i++) {
@@ -130,7 +131,7 @@ describe(`A Board should`, () => {
         }
     });
 
-    test(`Answer with all rows correctly`, () => {
+    it(`Answers with all rows correctly`, () => {
         const rows = board.getRows();
         expect(rows.length).toBe(7);
         for (let i = 0; i < rows.length; i++) {
@@ -138,7 +139,7 @@ describe(`A Board should`, () => {
         }
     });
 
-    test(`Answer with a correct result when folding over cells`, () => {
+    it(`Answers with a correct result when folding over cells`, () => {
         const totalOfRed = board.foldCells(
             (total: number, cell: Cell) => total + cell.getStonesOf(Color.Red),
             0
@@ -158,7 +159,7 @@ describe(`A Board should`, () => {
         expect(totalOfStones).toBe(20);
     });
 
-    test(`Answer with a correct result when mapping over cells`, () => {
+    it(`Answers with a correct result when mapping over cells`, () => {
         const matrixWithRed = board.mapCells((cell: Cell) => cell.getStonesOf(Color.Red));
         expect(matrixWithRed).toStrictEqual(Matrix(5, 7, (_, y) => (y === 0 ? 1 : 0)));
 
@@ -173,7 +174,7 @@ describe(`A Board should`, () => {
         );
     });
 
-    test(`Answer with a correct result when filtering over cells`, () => {
+    it(`Answers with a correct result when filtering over cells`, () => {
         const onlyCellsWithRed = board.filterCells((cell: Cell) => cell.hasStonesOf(Color.Red));
         expect(onlyCellsWithRed).toStrictEqual([
             board.getCell(0, 0),
@@ -200,7 +201,7 @@ describe(`A Board should`, () => {
         expect(onlyCellsWithBlueAnBlack[0]).toBe(board.getCell(2, 3));
     });
 
-    test(`Answer with a correct result when doing foreach over cells`, () => {
+    it(`Answers with a correct result when doing foreach over cells`, () => {
         let x = 0;
         let y = 0;
         const adder = (): void => {
@@ -218,14 +219,14 @@ describe(`A Board should`, () => {
         expect(y).toBe(6);
     });
 
-    test(`Clean the board correctly`, () => {
+    it(`Cleans the board correctly`, () => {
         board.clean();
         board.foreachCells((cell: Cell) => {
             expect(cell.isEmpty()).toBe(true);
         });
     });
 
-    test(`Never fail when attempting to set a valid head location`, () => {
+    it(`Never fails when attempting to set a valid head location`, () => {
         expect(() => {
             board.head = [0, 0];
         }).not.toThrow();
@@ -249,7 +250,7 @@ describe(`A Board should`, () => {
         }).not.toThrow();
     });
 
-    test(`Set the head to the correct location when setting`, () => {
+    it(`Sets the head to the correct location when setting`, () => {
         board.head = [0, 0];
         expect(board.headX).toBe(0);
         expect(board.headY).toBe(0);
@@ -268,7 +269,7 @@ describe(`A Board should`, () => {
     });
 
     // eslint-disable-next-line max-len
-    test(`Throw LocationFallsOutsideBoard with attempt SetLocation when attempting to move to an invalid location`, () => {
+    it(`Throws LocationFallsOutsideBoard with attempt SetLocation when attempting to move to an invalid location`, () => {
         expect(() => {
             board.head = [-1, 0];
         }).toThrow();
@@ -310,7 +311,7 @@ describe(`A Board should`, () => {
         }
     });
 
-    test(`Move the head correctly when not falling outside the board`, () => {
+    it(`Moves the head correctly when not falling outside the board`, () => {
         board.moveHeadTo(Direction.East);
         expect(board.headX).toBe(3);
         expect(board.headY).toBe(3);
@@ -345,7 +346,7 @@ describe(`A Board should`, () => {
     });
 
     // eslint-disable-next-line max-len
-    test(`Throw LocationFallsOutsideBoard with attempt Move when attempting to move to an invalid location`, () => {
+    it(`Throws LocationFallsOutsideBoard with attempt Move when attempting to move to an invalid location`, () => {
         // Set head in origin
         board.head = [0, 0];
 
@@ -393,7 +394,7 @@ describe(`A Board should`, () => {
         }
     });
 
-    test(`Move the head to the edge correctly`, () => {
+    it(`Moves the head to the edge correctly`, () => {
         board.moveHeadToEdgeAt(Direction.East);
         expect(board.headX).toBe(4);
         expect(board.headY).toBe(3);
@@ -411,7 +412,7 @@ describe(`A Board should`, () => {
         expect(board.headY).toBe(6);
     });
 
-    test(`Change the size to a bigger one correctly when added at end`, () => {
+    it(`Changes the size to a bigger one correctly when added at end`, () => {
         const currentHead = board.head;
         board.changeSizeTo(6, 8);
         expect(board.width).toBe(6);
@@ -426,7 +427,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(0, 0).getStonesOf(Color.Green)).toBe(1);
     });
 
-    test(`Change the size to a bigger one correctly when added at beginning`, () => {
+    it(`Changes the size to a bigger one correctly when added at beginning`, () => {
         const currentHead = board.head;
         board.changeSizeTo(6, 8, true);
         expect(board.width).toBe(6);
@@ -442,7 +443,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(1, 1).getStonesOf(Color.Green)).toBe(1);
     });
 
-    test(`Change the size to a smaller one correctly when removed from end`, () => {
+    it(`Changes the size to a smaller one correctly when removed from end`, () => {
         const currentHead = board.head;
         board.changeSizeTo(3, 4);
         expect(board.width).toBe(3);
@@ -456,7 +457,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(0, 0).getStonesOf(Color.Green)).toBe(1);
     });
 
-    test(`Change the size to a smaller one correctly when removed from beginning`, () => {
+    it(`Changes the size to a smaller one correctly when removed from beginning`, () => {
         board.changeSizeTo(3, 4, true);
         expect(board.width).toBe(3);
         expect(board.height).toBe(4);
@@ -468,7 +469,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(0, 0).getStonesOf(Color.Black)).toBe(3);
     });
 
-    test(`Change the size to a smaller board from end also changes head if needed`, () => {
+    it(`Changes the size to a smaller board from end also changes head if needed`, () => {
         board.changeSizeTo(2, 2, false);
         expect(board.width).toBe(2);
         expect(board.height).toBe(2);
@@ -476,7 +477,7 @@ describe(`A Board should`, () => {
         expect(board.headY).toBe(1);
     });
 
-    test(`Change the size to a smaller board from beginning also changes head if needed`, () => {
+    it(`Changes the size to a smaller board from beginning also changes head if needed`, () => {
         board.changeSizeTo(2, 2, true);
         expect(board.width).toBe(2);
         expect(board.height).toBe(2);
@@ -484,7 +485,7 @@ describe(`A Board should`, () => {
         expect(board.headY).toBe(0);
     });
 
-    test(`Add a row to the South acts as changing size from beginning`, () => {
+    it(`Adds a row to the South acts as changing size from beginning`, () => {
         const currentHead = board.head;
         board.addRow(Direction.South);
         expect(board.width).toBe(5);
@@ -497,7 +498,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(0, 0).isEmpty()).toBe(true);
     });
 
-    test(`Add multiple rows to the South acts as changing size from beginning`, () => {
+    it(`Adds multiple rows to the South acts as changing size from beginning`, () => {
         const currentHead = board.head;
         board.addRows(3, Direction.South);
         expect(board.width).toBe(5);
@@ -510,7 +511,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(0, 0).isEmpty()).toBe(true);
     });
 
-    test(`Add a row to the North acts as changing size from end`, () => {
+    it(`Adds a row to the North acts as changing size from end`, () => {
         const currentHead = board.head;
         board.addRow(Direction.North);
         expect(board.width).toBe(5);
@@ -523,7 +524,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(0, 7).isEmpty()).toBe(true);
     });
 
-    test(`Add multiple rows to the North acts as changing size from end`, () => {
+    it(`Adds multiple rows to the North acts as changing size from end`, () => {
         const currentHead = board.head;
         board.addRows(3, Direction.North);
         expect(board.width).toBe(5);
@@ -538,7 +539,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(0, 9).isEmpty()).toBe(true);
     });
 
-    test(`Add a column to the West acts as changing size from beginning`, () => {
+    it(`Adds a column to the West acts as changing size from beginning`, () => {
         const currentHead = board.head;
         board.addColumn(Direction.West);
         expect(board.width).toBe(6);
@@ -551,7 +552,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(0, 0).isEmpty()).toBe(true);
     });
 
-    test(`Add multiple columns to the West acts as changing size from beginning`, () => {
+    it(`Adds multiple columns to the West acts as changing size from beginning`, () => {
         const currentHead = board.head;
         board.addColumns(3, Direction.West);
         expect(board.width).toBe(8);
@@ -564,7 +565,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(0, 0).isEmpty()).toBe(true);
     });
 
-    test(`Add a column to the East acts as changing size from end`, () => {
+    it(`Adds a column to the East acts as changing size from end`, () => {
         const currentHead = board.head;
         board.addColumn(Direction.East);
         expect(board.width).toBe(6);
@@ -577,7 +578,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(5, 0).isEmpty()).toBe(true);
     });
 
-    test(`Add multiple columns to the East acts as changing size from end`, () => {
+    it(`Adds multiple columns to the East acts as changing size from end`, () => {
         const currentHead = board.head;
         board.addColumns(3, Direction.East);
         expect(board.width).toBe(8);
@@ -592,7 +593,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(7, 0).isEmpty()).toBe(true);
     });
 
-    test(`Remove a row to the South acts as changing size from beginning`, () => {
+    it(`Removes a row to the South acts as changing size from beginning`, () => {
         const currentHead = board.head;
         board.removeRow(Direction.South);
         expect(board.width).toBe(5);
@@ -604,7 +605,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(2, 2).getStonesOf(Color.Black)).toBe(3);
     });
 
-    test(`Remove multiple rows to the South acts as changing size from beginning`, () => {
+    it(`Removes multiple rows to the South acts as changing size from beginning`, () => {
         const currentHead = board.head;
         board.removeRows(3, Direction.South);
         expect(board.width).toBe(5);
@@ -616,7 +617,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(2, 0).getStonesOf(Color.Black)).toBe(3);
     });
 
-    test(`Remove a row to the North acts as changing size from end`, () => {
+    it(`Removes a row to the North acts as changing size from end`, () => {
         const currentHead = board.head;
         board.removeRow(Direction.North);
         expect(board.width).toBe(5);
@@ -631,7 +632,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(2, 3).getStonesOf(Color.Black)).toBe(3);
     });
 
-    test(`Remove multiple rows to the North acts as changing size from end`, () => {
+    it(`Removes multiple rows to the North acts as changing size from end`, () => {
         const currentHead = board.head;
         board.removeRows(3, Direction.North);
         expect(board.width).toBe(5);
@@ -646,7 +647,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(2, 3).getStonesOf(Color.Black)).toBe(3);
     });
 
-    test(`Remove a column to the West acts as changing size from beginning`, () => {
+    it(`Removes a column to the West acts as changing size from beginning`, () => {
         const currentHead = board.head;
         board.removeColumn(Direction.West);
         expect(board.width).toBe(4);
@@ -658,7 +659,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(1, 3).getStonesOf(Color.Black)).toBe(3);
     });
 
-    test(`Remove multiple columns to the West acts as changing size from beginning`, () => {
+    it(`Removes multiple columns to the West acts as changing size from beginning`, () => {
         const currentHead = board.head;
         board.removeColumns(3, Direction.West);
         expect(board.width).toBe(2);
@@ -668,7 +669,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(0, 3).isEmpty()).toBe(true);
     });
 
-    test(`Remove a column to the East acts as changing size from end`, () => {
+    it(`Removes a column to the East acts as changing size from end`, () => {
         const currentHead = board.head;
         board.removeColumn(Direction.East);
         expect(board.width).toBe(4);
@@ -683,7 +684,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(2, 3).getStonesOf(Color.Black)).toBe(3);
     });
 
-    test(`Remove multiple columns to the East acts as changing size from end`, () => {
+    it(`Removes multiple columns to the East acts as changing size from end`, () => {
         const currentHead = board.head;
         board.removeColumns(3, Direction.East);
         expect(board.width).toBe(2);
@@ -696,7 +697,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(1, 3).isEmpty()).toBe(true);
     });
 
-    test(`Setting width is the same as adding columns to East`, () => {
+    it(`Behaves equally when setting width than when adding columns to East`, () => {
         const currentHead = board.head;
         board.width = 2;
         expect(board.width).toBe(2);
@@ -709,7 +710,7 @@ describe(`A Board should`, () => {
         expect(board.getCell(1, 3).isEmpty()).toBe(true);
     });
 
-    test(`Setting height is the same as adding rows to North`, () => {
+    it(`Behaves equally when setting height than when adding rows to North`, () => {
         const currentHead = board.head;
         board.height = 5;
         expect(board.width).toBe(5);

@@ -46,12 +46,13 @@
  * @packageDocumentation
  */
 import {
+    IArrayExpectation,
     IFinishedExpectation,
     INumberExpectation,
-    IStringExpectation,
-    IArrayExpectation,
-    IObjectExpectation
+    IObjectExpectation,
+    IStringExpectation
 } from './Interfaces';
+
 import { Expectation } from './Expectation';
 import { JoinedExpectation } from './JoinedExpectation';
 
@@ -100,6 +101,8 @@ import { JoinedExpectation } from './JoinedExpectation';
  * For object, the focus of the matcher is put on the instance type (class it belongs to)
  * and the properties it contains (attribute keys), extending so with:
  * * [[Matchers.toHavePropertyCount | toHavePropertyCount]]
+ * * [[Matchers.toHaveAtLeast | toHaveAtLeast]]
+ * * [[Matchers.toHaveNoOtherThan | toHaveNoOtherThan]]
  * * [[Matchers.toHaveProperty | toHaveProperty]]
  * * [[Matchers.toBeInstanceOf | toBeInstanceOf]]
  *

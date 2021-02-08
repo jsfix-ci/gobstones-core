@@ -3,7 +3,7 @@
  * Windows: Please do not use trailing comma as windows will fail with token error
  */
 
-const { series, rimraf, copy } = require('nps-utils');
+const { series, rimraf, copy, ifNotWindows } = require('nps-utils');
 const path = require('path');
 
 /**
@@ -25,8 +25,18 @@ const tools = {
     webpack: function () {
         return `webpack`;
     },
-    jest: function (tests) {
-        return series((tests ? 'jest -t "' + tests + '"' : 'jest') + ' --coverage');
+    jest: function () {
+        // Only for POSIX Based OSes, if a test file (withing test folder and ending in .test.ts)
+        // contains the .only key, run exclusively that file, else, run all files as default behavior.
+        // This fixes the ugly behavior of jest running all tests always, even on .only.
+        // This does not work in Windows, which defaults to running all tests.
+        return ifNotWindows(
+            'if grep -l "\\.only" ./test/**/*.test.ts; ' +
+                'then grep -l "\\.only" ./test/**/*.test.ts | xargs jest; ' +
+                'else jest --coverage; ' +
+                'fi',
+            'jest --coverage'
+        );
     },
     typedoc: function (path) {
         return `typedoc`;
@@ -88,27 +98,17 @@ module.exports = {
          * Build the application for deployment
          */
         build: {
-            script: series(
-                nps('clean.dist'),
-                tools.webpack()
-            ),
+            script: series(nps('clean.dist'), tools.webpack()),
             description: 'Build the application into the dist folder'
         },
         /*
          * Run the tests
          */
         test: {
-            script: series(
-                nps('clean.coverage'),
-                nps('lint'),
-                tools.jest()
-            ),
+            script: series(nps('clean.coverage'), nps('lint'), tools.jest()),
             description: 'Run the index in development mode',
             serve: {
-                script: series(
-                    nps('test'),
-                    server.serve('./coverage')
-                ),
+                script: series(nps('test'), server.serve('./coverage')),
                 description: 'Serve the coverage report produced by jest'
             }
         },
@@ -141,10 +141,7 @@ module.exports = {
             hiddenFromHelp: true
         },
         lint: {
-            script: series(
-                tools.eslint('./src'),
-                tools.eslint('./test')
-            ),
+            script: series(tools.eslint('./src'), tools.eslint('./test')),
             description: 'Run ESLint on all the files',
             hiddenFromHelp: true
         },
@@ -157,10 +154,7 @@ module.exports = {
             description: 'Run Typedoc and generate docs',
             hiddenFromHelp: true,
             serve: {
-                script: series(
-                    'nps doc',
-                    server.serve('./docs')
-                ),
+                script: series('nps doc', server.serve('./docs')),
                 description: 'Generate and serve the docs as static files',
                 hiddenFromHelp: true
             }
