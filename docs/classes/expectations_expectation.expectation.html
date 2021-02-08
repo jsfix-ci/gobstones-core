@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Expectation | @gobstones/gobstones-core - v0.1.0</title>
+	<title>Expectation | @gobstones/gobstones-core - v0.2.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -24,7 +24,7 @@
 					</ul>
 					<ul class="results-priority" style="display:none">
 					</ul>
-					<a href="../index.html" class="title">@gobstones/gobstones-core - v0.1.0</a>
+					<a href="../index.html" class="title">@gobstones/gobstones-core - v0.2.0</a>
 					&emsp;<a href="https://github.com/gobstones/gobstones-core" class="title">Repository</a>
 					&emsp;<a href="https://dev.gobstones.org" class="title">Gobstones Docs</a>
 					&emsp;<a href="https://dev.gobstones.org/contribution-guidelines" class="title">Contribution Guidelines</a>
@@ -154,8 +154,10 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="expectations_expectation.expectation.html#tobeundefined" class="tsd-kind-icon">toBeUndefined</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="expectations_expectation.expectation.html#tocontain" class="tsd-kind-icon">toContain</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="expectations_expectation.expectation.html#toendwith" class="tsd-kind-icon">toEndWith</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="expectations_expectation.expectation.html#tohaveatleast" class="tsd-kind-icon">toHaveAtLeast</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="expectations_expectation.expectation.html#tohaveatposition" class="tsd-kind-icon">toHaveAtPosition</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="expectations_expectation.expectation.html#tohavelength" class="tsd-kind-icon">toHaveLength</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="expectations_expectation.expectation.html#tohavenootherthan" class="tsd-kind-icon">toHaveNoOtherThan</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="expectations_expectation.expectation.html#tohaveproperty" class="tsd-kind-icon">toHaveProperty</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="expectations_expectation.expectation.html#tohavepropertycount" class="tsd-kind-icon">toHavePropertyCount</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="expectations_expectation.expectation.html#tohavesubstring" class="tsd-kind-icon">toHaveSubstring</a></li>
@@ -634,7 +636,7 @@
 					<a name="runmatcher" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> run<wbr>Matcher</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">run<wbr>Matcher<span class="tsd-signature-symbol">(</span>matcherName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="expectations_expectation.expectation.html" class="tsd-signature-type">Expectation</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">run<wbr>Matcher<span class="tsd-signature-symbol">(</span>matcherName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, sparse<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="expectations_expectation.expectation.html" class="tsd-signature-type">Expectation</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -661,6 +663,9 @@
 									<div class="tsd-comment tsd-typography tsd-comment-text">
 										<p>The arguments to pass to the matcher</p>
 									</div>
+								</li>
+								<li>
+									<h5>sparse: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="expectations_expectation.expectation.html" class="tsd-signature-type">Expectation</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1169,6 +1174,34 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tohaveatleast" class="tsd-anchor"></a>
+					<h3>to<wbr>Have<wbr>AtLeast</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Have<wbr>AtLeast<span class="tsd-signature-symbol">(</span>keys<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="expectations_expectation.expectation.html" class="tsd-signature-type">Expectation</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/expectations_interfaces.ifinishedexpectation.html" class="tsd-signature-type">IFinishedExpectation</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography tsd-comment-tags">
+								<dl class="tsd-comment-tags"><dt>inheritdoc</dt>
+									<dd><p>[[IObjectExpectancy.toHaveAtLeast]]</p>
+								</dd></dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>keys: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="expectations_expectation.expectation.html" class="tsd-signature-type">Expectation</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
+								<span class="tsd-signature-symbol"> &amp; </span>
+								<a href="../interfaces/expectations_interfaces.ifinishedexpectation.html" class="tsd-signature-type">IFinishedExpectation</a>
+							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="tohaveatposition" class="tsd-anchor"></a>
 					<h3>to<wbr>Have<wbr>AtPosition</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1218,6 +1251,34 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>count: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="expectations_expectation.expectation.html" class="tsd-signature-type">Expectation</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
+								<span class="tsd-signature-symbol"> &amp; </span>
+								<a href="../interfaces/expectations_interfaces.ifinishedexpectation.html" class="tsd-signature-type">IFinishedExpectation</a>
+							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tohavenootherthan" class="tsd-anchor"></a>
+					<h3>to<wbr>Have<wbr>NoOther<wbr>Than</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Have<wbr>NoOther<wbr>Than<span class="tsd-signature-symbol">(</span>keys<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="expectations_expectation.expectation.html" class="tsd-signature-type">Expectation</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/expectations_interfaces.ifinishedexpectation.html" class="tsd-signature-type">IFinishedExpectation</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography tsd-comment-tags">
+								<dl class="tsd-comment-tags"><dt>inheritdoc</dt>
+									<dd><p>[[IObjectExpectancy.toHaveNoOtherThan]]</p>
+								</dd></dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>keys: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="expectations_expectation.expectation.html" class="tsd-signature-type">Expectation</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
@@ -1512,10 +1573,16 @@
 								<a href="expectations_expectation.expectation.html#toendwith" class="tsd-kind-icon">to<wbr>End<wbr>With</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="expectations_expectation.expectation.html#tohaveatleast" class="tsd-kind-icon">to<wbr>Have<wbr>AtLeast</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="expectations_expectation.expectation.html#tohaveatposition" class="tsd-kind-icon">to<wbr>Have<wbr>AtPosition</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="expectations_expectation.expectation.html#tohavelength" class="tsd-kind-icon">to<wbr>Have<wbr>Length</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="expectations_expectation.expectation.html#tohavenootherthan" class="tsd-kind-icon">to<wbr>Have<wbr>NoOther<wbr>Than</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="expectations_expectation.expectation.html#tohaveproperty" class="tsd-kind-icon">to<wbr>Have<wbr>Property</a>

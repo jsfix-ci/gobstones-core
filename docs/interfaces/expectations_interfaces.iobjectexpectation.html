@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IObjectExpectation | @gobstones/gobstones-core - v0.1.0</title>
+	<title>IObjectExpectation | @gobstones/gobstones-core - v0.2.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -24,7 +24,7 @@
 					</ul>
 					<ul class="results-priority" style="display:none">
 					</ul>
-					<a href="../index.html" class="title">@gobstones/gobstones-core - v0.1.0</a>
+					<a href="../index.html" class="title">@gobstones/gobstones-core - v0.2.0</a>
 					&emsp;<a href="https://github.com/gobstones/gobstones-core" class="title">Repository</a>
 					&emsp;<a href="https://dev.gobstones.org" class="title">Gobstones Docs</a>
 					&emsp;<a href="https://dev.gobstones.org/contribution-guidelines" class="title">Contribution Guidelines</a>
@@ -123,6 +123,8 @@
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="expectations_interfaces.iobjectexpectation.html#tobenull" class="tsd-kind-icon">toBeNull</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="expectations_interfaces.iobjectexpectation.html#tobetruthy" class="tsd-kind-icon">toBeTruthy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="expectations_interfaces.iobjectexpectation.html#tobeundefined" class="tsd-kind-icon">toBeUndefined</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="expectations_interfaces.iobjectexpectation.html#tohaveatleast" class="tsd-kind-icon">toHaveAtLeast</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="expectations_interfaces.iobjectexpectation.html#tohavenootherthan" class="tsd-kind-icon">toHaveNoOtherThan</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="expectations_interfaces.iobjectexpectation.html#tohaveproperty" class="tsd-kind-icon">toHaveProperty</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="expectations_interfaces.iobjectexpectation.html#tohavepropertycount" class="tsd-kind-icon">toHavePropertyCount</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="expectations_interfaces.iobjectexpectation.html#tohavetype" class="tsd-kind-icon">toHaveType</a></li>
@@ -355,6 +357,64 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="tohaveatleast" class="tsd-anchor"></a>
+					<h3>to<wbr>Have<wbr>AtLeast</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Have<wbr>AtLeast<span class="tsd-signature-symbol">(</span>keys<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="expectations_interfaces.iobjectexpectation.html" class="tsd-signature-type">IObjectExpectation</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><a href="expectations_interfaces.ifinishedexpectation.html" class="tsd-signature-type">IFinishedExpectation</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography tsd-comment-shorttext">
+								<div class="lead">
+									<p>Answer if an object has  at least all keys in the least. Combine with
+									toHaveNoOtherThan to ensure exact key existence</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>keys: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="expectations_interfaces.iobjectexpectation.html" class="tsd-signature-type">IObjectExpectation</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
+								<span class="tsd-signature-symbol"> &amp; </span>
+								<a href="expectations_interfaces.ifinishedexpectation.html" class="tsd-signature-type">IFinishedExpectation</a>
+							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="tohavenootherthan" class="tsd-anchor"></a>
+					<h3>to<wbr>Have<wbr>NoOther<wbr>Than</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Have<wbr>NoOther<wbr>Than<span class="tsd-signature-symbol">(</span>keys<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="expectations_interfaces.iobjectexpectation.html" class="tsd-signature-type">IObjectExpectation</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><a href="expectations_interfaces.ifinishedexpectation.html" class="tsd-signature-type">IFinishedExpectation</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography tsd-comment-shorttext">
+								<div class="lead">
+									<p>Answer if an object has no other than the given keys (although not all given
+									need to be present). Combine with toHaveAtLeast to ensure exact key existence</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>keys: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="expectations_interfaces.iobjectexpectation.html" class="tsd-signature-type">IObjectExpectation</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
+								<span class="tsd-signature-symbol"> &amp; </span>
+								<a href="expectations_interfaces.ifinishedexpectation.html" class="tsd-signature-type">IFinishedExpectation</a>
+							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="tohaveproperty" class="tsd-anchor"></a>
 					<h3>to<wbr>Have<wbr>Property</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -494,6 +554,12 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 								<a href="expectations_interfaces.iobjectexpectation.html#tobeundefined" class="tsd-kind-icon">to<wbr>BeUndefined</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="expectations_interfaces.iobjectexpectation.html#tohaveatleast" class="tsd-kind-icon">to<wbr>Have<wbr>AtLeast</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="expectations_interfaces.iobjectexpectation.html#tohavenootherthan" class="tsd-kind-icon">to<wbr>Have<wbr>NoOther<wbr>Than</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="expectations_interfaces.iobjectexpectation.html#tohaveproperty" class="tsd-kind-icon">to<wbr>Have<wbr>Property</a>
