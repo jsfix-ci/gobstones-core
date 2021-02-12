@@ -2,11 +2,11 @@
  * This module provides a set of types that identify the information of a board
  * and it's parts (cell locations, cell contents and others).
  * This types are used by the Gobstones Interpreter and the Gobstones GBB Parser,
- * and it's main type is implemented by the [[Board.ts/Board]] class.
+ * and it's main type is implemented by the [[Board/Board | Board]] class.
  *
  * This definitions are internal to Gobstones Projects, and their usage should
  * be avoided as most as possible. External projects such as plugins should
- * be avoided in favor of using the [[Board.ts/Board]] class.
+ * be avoided in favor of using the [[Board/Board | Board]] class.
  *
  * @author Alan Rodas Bonjour <alanrodas@gmail.com>
  *

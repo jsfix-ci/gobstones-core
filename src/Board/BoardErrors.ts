@@ -1,6 +1,6 @@
 /**
- * This module provides a set of custom errors thrown by the [[Board.ts/Board | Board]]
- * class and it's associated [[Board.ts/Cell | Cell]] class when an invalid operations
+ * This module provides a set of custom errors thrown by the [[Board/Board | Board]]
+ * class and it's associated [[Board/Cell | Cell]] class when an invalid operations
  * are performed over them.
  *
  * @author Alan Rodas Bonjour <alanrodas@gmail.com>
@@ -10,28 +10,23 @@
 import { CellInfo, CellLocation } from './BoardDefinition';
 
 /**
- * @internal
  * @ignore
  *
  * The operation attempted to be performed when a [[InvalidCellReading]] error ocurred.
  */
 export type CellReadingActionAttempt = 'ReadCell' | 'ReadColumn' | 'ReadRow';
 /**
- * @internal
  * @ignore
- *
  * The operation attempted to be performed when a [[LocationFallsOutsideBoard]] error ocurred.
  */
 export type LocationChangeActionAttempt = 'Move' | 'SetLocation';
 /**
- * @internal
  * @ignore
  *
  * The operation attempted to be performed when a [[InvalidSizeChange]] error ocurred.
  */
 export type InvalidSizeChangeAttempt = 'Resize' | 'RemoveRow' | 'RemoveColumn';
 /**
- * @internal
  * @ignore
  *
  * The operation attempted to be performed when a [[InvalidStonesAmount]] error ocurred.
@@ -40,8 +35,8 @@ export type StonesChangeActionAttempt = 'AddStones' | 'RemoveStones' | 'SetStone
 
 /**
  * The base class of the error hierarchy that is thrown when
- * an invalid operation is performed in the [[Board.ts/Board | Board]]
- * class and it's associated [[Board.ts/Cell | Cell]].
+ * an invalid operation is performed in the [[Board/Board | Board]]
+ * class and it's associated [[Board/Cell | Cell]].
  */
 export class BoardError extends Error {
     /** A boolean that specifies the instance as an error. Always `true`. */

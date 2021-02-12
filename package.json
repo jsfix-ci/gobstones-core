@@ -1,6 +1,6 @@
 {
   "name": "@gobstones/gobstones-core",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A set of utility types, interfaces and classes that are used through all the Gobstones Platform repositories.",
   "repository": "https://github.com/gobstones/gobstones-core",
   "author": "Alan Rodas Bonjour <alanrodas@gmail.com>",
@@ -33,9 +33,9 @@
     "husky": "^4.3.8",
     "jest": "^26.0.1",
     "jest-rspec-utils": "^0.1.0",
-    "move-file-cli": "^2.0.0",
     "nps": "^5.10.0",
     "nps-utils": "^1.7.0",
+    "onchange": "^7.1.0",
     "prettier": "^2.0.5",
     "serve": "^11.3.2",
     "ts-jest": "^26.1.0",

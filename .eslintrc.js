@@ -149,14 +149,6 @@ module.exports = {
         ],
         "radix": "error",
         "require-await": "error",
-        "space-before-function-paren": [
-            "error",
-            {
-                "anonymous": "never",
-                "asyncArrow": "always",
-                "named": "never"
-            }
-        ],
         "spaced-comment": "error",
         "use-isnan": "error",
         "valid-typeof": "error",

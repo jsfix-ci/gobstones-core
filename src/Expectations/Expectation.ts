@@ -92,7 +92,7 @@ export class Expectation<T> extends FinishedExpectation {
         return this.runMatcher('toHaveType', [typeName]);
     }
 
-    // INumberExpectancy
+    // INumberExpectation
 
     /** @inheritdoc [[INumberExpectation.toBeGreaterThan]] */
     public toBeGreaterThan(value: number): this & IFinishedExpectation {
@@ -134,51 +134,51 @@ export class Expectation<T> extends FinishedExpectation {
         return this.runMatcher('toBeCloseTo', [value, digits]);
     }
 
-    // IStringExpectancy
+    // IStringExpectation
 
-    /** @inheritdoc [[IStringExpectancy.toHaveSubstring]] */
+    /** @inheritdoc [[IStringExpectation.toHaveSubstring]] */
     public toHaveSubstring(substring: string): this & IFinishedExpectation {
         return this.runMatcher('toHaveSubstring', [substring]);
     }
 
-    /** @inheritdoc [[IStringExpectancy.toStartWith]] */
+    /** @inheritdoc [[IStringExpectation.toStartWith]] */
     public toStartWith(start: string): this & IFinishedExpectation {
         return this.runMatcher('toStartWith', [start]);
     }
 
-    /** @inheritdoc [[IStringExpectancy.toEndWith]] */
+    /** @inheritdoc [[IStringExpectation.toEndWith]] */
     public toEndWith(end: string): this & IFinishedExpectation {
         return this.runMatcher('toEndWith', [end]);
     }
 
-    /** @inheritdoc [[IStringExpectancy.toMatch]] */
+    /** @inheritdoc [[IStringExpectation.toMatch]] */
     public toMatch(regexp: RegExp): this & IFinishedExpectation {
         return this.runMatcher('toMatch', [regexp]);
     }
 
-    // IArrayExpectancy
+    // IArrayExpectation
 
-    /** @inheritdoc [[IArrayExpectancy.toHaveLength]] */
+    /** @inheritdoc [[IArrayExpectation.toHaveLength]] */
     public toHaveLength(count: number): this & IFinishedExpectation {
         return this.runMatcher('toHaveLength', [count]);
     }
-    /** @inheritdoc [[IArrayExpectancy.toContain]] */
+    /** @inheritdoc [[IArrayExpectation.toContain]] */
     public toContain(value: T): this & IFinishedExpectation {
         return this.runMatcher('toContain', [value]);
     }
-    /** @inheritdoc [[IArrayExpectancy.toHaveLetoHaveAtPositionngth]] */
+    /** @inheritdoc [[IArrayExpectation.toHaveAtPosition]] */
     public toHaveAtPosition(value: T, position: number): this & IFinishedExpectation {
         return this.runMatcher('toHaveAtPosition', [value, position]);
     }
-    /** @inheritdoc [[IArrayExpectancy.allToSatisfy]] */
+    /** @inheritdoc [[IArrayExpectation.allToSatisfy]] */
     public allToSatisfy(criteria: (item: T) => boolean): this & IFinishedExpectation {
         return this.runMatcher('allToSatisfy', [criteria]);
     }
-    /** @inheritdoc [[IArrayExpectancy.anyToSatisfy]] */
+    /** @inheritdoc [[IArrayExpectation.anyToSatisfy]] */
     public anyToSatisfy(criteria: (item: T) => boolean): this & IFinishedExpectation {
         return this.runMatcher('anyToSatisfy', [criteria]);
     }
-    /** @inheritdoc [[IArrayExpectancy.amountToSatisfy]] */
+    /** @inheritdoc [[IArrayExpectation.amountToSatisfy]] */
     public amountToSatisfy(
         count: number,
         criteria: (item: T) => boolean
@@ -186,33 +186,33 @@ export class Expectation<T> extends FinishedExpectation {
         return this.runMatcher('amountToSatisfy', [count, criteria]);
     }
 
-    // IObjectExpectancy
+    // IObjectExpectation
 
-    /** @inheritdoc [[IObjectExpectancy.toHavePropertyCount]] */
+    /** @inheritdoc [[IObjectExpectation.toHavePropertyCount]] */
     public toHavePropertyCount(count: number): this & IFinishedExpectation {
         return this.runMatcher('toHavePropertyCount', [count]);
     }
-    /** @inheritdoc [[IObjectExpectancy.toHaveAtLeast]] */
+    /** @inheritdoc [[IObjectExpectation.toHaveAtLeast]] */
     public toHaveAtLeast(keys: string[]): this & IFinishedExpectation {
         return this.runMatcher('toHaveAtLeast', keys, false);
     }
-    /** @inheritdoc [[IObjectExpectancy.toHaveNoOtherThan]] */
+    /** @inheritdoc [[IObjectExpectation.toHaveNoOtherThan]] */
     public toHaveNoOtherThan(keys: string[]): this & IFinishedExpectation {
         return this.runMatcher('toHaveNoOtherThan', keys, false);
     }
-    /** @inheritdoc [[IObjectExpectancy.toHaveProperty]] */
+    /** @inheritdoc [[IObjectExpectation.toHaveProperty]] */
     public toHaveProperty(propertyName: string): this & IFinishedExpectation {
         return this.runMatcher('toHaveProperty', [propertyName]);
     }
-    /** @inheritdoc [[IObjectExpectancy.toBeInstanceOf]] */
+    /** @inheritdoc [[IObjectExpectation.toBeInstanceOf]] */
     // eslint-disable-next-line @typescript-eslint/ban-types
     public toBeInstanceOf(classConstructor: Function): this & IFinishedExpectation {
         return this.runMatcher('toBeInstanceOf', [classConstructor]);
     }
 
-    // IFinishedExpectancy
+    // IFinishedExpectation
 
-    /** @inheritdoc [[IFinishedExpectancy.toBeInstanceOf]] */
+    /** @inheritdoc [[IFinishedExpectation.getResult]] */
     public getResult(): boolean {
         return this.result;
     }

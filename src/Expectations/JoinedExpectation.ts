@@ -15,8 +15,8 @@ import { IFinishedExpectation } from './Interfaces';
  * joiner function. A JoinedExpectation implements [[FinishedExpectation]],
  * where the result is calculated using the given joiner function.
  *
- * Currently two join forms are provided, [[Expectations.expect.and]],
- * and [[Expectations.expect.or]].
+ * Currently two join forms are provided, [[Expectations/Expectations.expect.and]],
+ * and [[Expectations/Expectations.expect.or]].
  */
 export class JoinedExpectation extends FinishedExpectation {
     /**
@@ -39,7 +39,7 @@ export class JoinedExpectation extends FinishedExpectation {
         this.result = joiner(expectations);
     }
 
-    /** @inheritdoc [[IFinishedExpectancy.toBeInstanceOf]] */
+    /** @inheritdoc [[IFinishedExpectancy.getResult]] */
     public getResult(): boolean {
         return this.result;
     }

@@ -15,19 +15,19 @@ import { IFinishedExpectation } from './Interfaces';
  * an implementation for [[getResult]].
  */
 export abstract class FinishedExpectation implements IFinishedExpectation {
-    /** @inheritdoc [[IFinishedExpectancy.orThrow]] */
+    /** @inheritdoc [[IFinishedExpectation.orThrow]] */
     public orThrow(error: Error): void {
         if (!this.getResult()) {
             throw error;
         }
     }
 
-    /** @inheritdoc [[IFinishedExpectancy.orYield]] */
+    /** @inheritdoc [[IFinishedExpectation.orYield]] */
     public orYield<T>(value: T): T {
         return !this.getResult() ? value : undefined;
     }
 
-    /** @inheritdoc [[IFinishedExpectancy.andDoOr]] */
+    /** @inheritdoc [[IFinishedExpectation.andDoOr]] */
     public andDoOr(actionWhenTrue: () => void, actionWhenFalse: () => void): void {
         if (this.getResult()) {
             actionWhenTrue();
@@ -36,17 +36,18 @@ export abstract class FinishedExpectation implements IFinishedExpectation {
         }
     }
 
-    /** @inheritdoc [[IFinishedExpectancy.andDo]] */
+    /** @inheritdoc [[IFinishedExpectation.andDo]] */
     public andDo(action: () => void): void {
         // eslint-disable-next-line @typescript-eslint/no-empty-function, no-empty-function
         this.andDoOr(action, () => {});
     }
 
-    /** @inheritdoc [[IFinishedExpectancy.orDo]] */
+    /** @inheritdoc [[IFinishedExpectation.orDo]] */
     public orDo(action: () => void): void {
         // eslint-disable-next-line @typescript-eslint/no-empty-function, no-empty-function
         this.andDoOr(() => {}, action);
     }
 
+    /** @inheritdoc [[IFinishedExpectation.getResult]] */
     abstract getResult(): boolean;
 }
