@@ -66,7 +66,7 @@ function serve(path) {
  * @example files.copy('./src', './dist')
  */
 function rename(src, dest) {
-    return `move-file ${src} ${dest}`;
+    return series(copyFile(src, dest), remove(src));
 }
 function remove(src) {
     return rimraf(src);

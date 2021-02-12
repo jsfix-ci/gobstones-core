@@ -122,15 +122,15 @@ const numberEquals = (a: number, b: number): boolean => {
  *
  * @returns `true` if both arrays are equal, `false` otherwise.
  */
-const arrayEquals = <T>(a: T[], b: T[], innerComparer: (a: T, b: T) => boolean): boolean => {
+const arrayEquals = <T>(aArr: T[], bArr: T[], innerComparer: (a: T, b: T) => boolean): boolean => {
     // Two arrays should have the same length
-    if (a.length !== b.length) return false;
+    if (aArr.length !== bArr.length) return false;
     // And the same element in each position, which is
     // compared by deep equality
-    for (let i = 0; i < a.length; i++) {
+    for (let i = 0; i < aArr.length; i++) {
         // In case the value in a position is not equal,
         // they are not equal
-        if (!innerComparer(a[i], b[i])) return false;
+        if (!innerComparer(aArr[i], bArr[i])) return false;
     }
     // They are only equal after full comparison
     return true;
@@ -149,10 +149,10 @@ const arrayEquals = <T>(a: T[], b: T[], innerComparer: (a: T, b: T) => boolean):
  *
  * @returns `true` if both object are equal, `false` otherwise.
  */
-const objectEquals = <T>(a: T, b: T, innerComparer: (a: T, b: T) => boolean): boolean => {
+const objectEquals = <T>(aArr: T, bArr: T, innerComparer: (a: T, b: T) => boolean): boolean => {
     // Obtain the object keys, sorted
-    const aKeys = Object.keys(a).sort();
-    const bKeys = Object.keys(b).sort();
+    const aKeys = Object.keys(aArr).sort();
+    const bKeys = Object.keys(bArr).sort();
     // They should have the same amount of keys
     if (aKeys.length !== bKeys.length) return false;
     // And perform a cheap key test (they should both have same keys)
@@ -162,8 +162,8 @@ const objectEquals = <T>(a: T, b: T, innerComparer: (a: T, b: T) => boolean): bo
     // If they do, perform a more expensive deep equal test in all values
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < aKeys.length; i++) {
-        const aValue = a[aKeys[i]];
-        const bValue = b[aKeys[i]];
+        const aValue = aArr[aKeys[i]];
+        const bValue = bArr[aKeys[i]];
         if (!innerComparer(aValue, bValue)) return false;
     }
     // They must be equal when this is reached

@@ -119,6 +119,12 @@ class CLICommandBuilder {
         };
     }
 
+    /**
+     * Make this command to be able to read input from a file.
+     *
+     * @param description The input flag description or the translation key if a translator is used.
+     * @param onReadErrorMsg The error message or translation key if a translator is used.
+     */
     public input(description: string, onReadErrorMsg: string): this {
         this.onReadErrorMsg = onReadErrorMsg;
         this.program.option(
@@ -128,6 +134,11 @@ class CLICommandBuilder {
         return this;
     }
 
+    /**
+     * Make this command to be able to write the output to a file.
+     *
+     * @param description The output flag description or translation key if a translator is used.
+     */
     public output(description: string): this {
         this.program.option(
             `${this.flags.out.short}, ${this.flags.out.long}, <filename>`,
@@ -136,6 +147,13 @@ class CLICommandBuilder {
         return this;
     }
 
+    /**
+     * Add a new option to the command.
+     *
+     * @param flags The flags to trigger this option
+     * @param description The description or translation key if a translator is used.
+     * @param defaultValue A default value.
+     */
     public option(flags: string, description?: string, defaultValue?: string | boolean): this {
         this.program.option(
             flags,
@@ -145,6 +163,14 @@ class CLICommandBuilder {
         return this;
     }
 
+    /**
+     * Set the action for this command. The action callback receives both the current
+     * command, and the arguments (Note this is one or more arguments, depending
+     * on the command definition. Mandatory or optional positional arguments are
+     * passed first, while the last element consists of the flags passed to the command)
+     *
+     * @param f The callback to run when this command is called.
+     */
     public action(f: (cliapp: this, ...args: any[]) => void): this {
         this.program.action((...options: any[]) => {
             this.setCorrectLanguage(options);
@@ -156,6 +182,12 @@ class CLICommandBuilder {
         return this;
     }
 
+    /**
+     * Read the input to this command. The input may be the first arguments passed
+     * to a command (without the flags, separated by space) if a mandatory argument
+     * or optional argument was given, or the contents of the
+     * input file if an input was configured.
+     */
     public read(): string {
         if (this.currentOptions && this.currentOptions.in) {
             return this.readFileInput(this.currentOptions.in);
@@ -163,6 +195,14 @@ class CLICommandBuilder {
         return this.currentArgs.join(' ');
     }
 
+    /**
+     * Write the given data to the standard output, or, to the expected file,
+     * if an output was configured. Note that when outputting to a file, if the
+     * file does not exists, it gets created. If it already exists, then the
+     * output is appended to the previously defined contents of that file.
+     *
+     * @param data The data to output
+     */
     public write(data: string): void {
         if (this.currentOptions && (this.currentOptions as any).out) {
             this.writeToFile((this.currentOptions as any).out, data);
@@ -171,6 +211,12 @@ class CLICommandBuilder {
         }
     }
 
+    /**
+     * Read the contents of a file. Throws error if
+     * the file does not exist.
+     *
+     * @param fileName The file to read.
+     */
     public readFileInput(fileName: string): string {
         this.ensureOrFailAndExit(
             fs.existsSync(fileName),
@@ -181,23 +227,75 @@ class CLICommandBuilder {
         return fs.readFileSync(fileName).toString();
     }
 
+    /**
+     * Write a set of contents to a given file.
+     *
+     * @param fileName The file to write to.
+     * @param contents The contents to write.
+     */
     public writeToFile(fileName: string, contents: string): void {
         fs.writeFileSync(fileName, contents, { flag: 'a' });
     }
 
+    /**
+     * Write a set of contents to the standard output.
+     *
+     * @param contents The contents to write.
+     */
     public writeToConsole(contents: string): void {
         // eslint-disable-next-line no-console
         console.log(contents);
     }
 
+    /**
+     * Ensure a condition is met, and if not, show the given error message,
+     * and exit the application with 1.
+     *
+     * @param condition The condition that needs to satisfy
+     * @param error
+     */
     public ensureOrFailAndExit(condition: boolean, error: string): void {
         if (!condition) {
-            // eslint-disable-next-line no-console
-            console.error(error);
-            process.exit(1);
+            this.writeToConsole(error);
+            this.exit(1);
         }
     }
 
+    /**
+     * Returns true if the command received no arguments nor flags
+     */
+    public hasNoArgs(): boolean {
+        return process.argv.slice(2).length > 0;
+    }
+
+    /**
+     * Output the command help.
+     */
+    public outputHelp(): void {
+        this.program.outputHelp();
+    }
+
+    /**
+     * Output the command's help if no arguments where given,
+     * then exit the application with 0.
+     */
+    public outputHelpOnNoArgs(): void {
+        if (this.hasNoArgs()) {
+            this.outputHelp();
+            this.exit(0);
+        }
+    }
+
+    /**
+     * Exit the application with the given value.
+     *
+     * @param value The value to exit with
+     */
+    public exit(value: number): void {
+        process.exit(value);
+    }
+
+    /** Set the correct language for this command */
     protected setCorrectLanguage(options: any & { language: string }): void {
         if (options.language) {
             this.validateLanguageFlag(options.language);
@@ -205,6 +303,7 @@ class CLICommandBuilder {
         }
     }
 
+    /** Validate that the given language flag, if any, is a valid translation */
     protected validateLanguageFlag(locale: string): void {
         const availableLangs = Object.keys(this.translator.getAvailableTranslations())
             .map((e) => '"' + e + '"')
@@ -217,7 +316,9 @@ class CLICommandBuilder {
 }
 
 class CLIApp extends CLICommandBuilder {
+    /** The arguments passed to the application */
     private processArgs: string[];
+    /** The texts being used as messages */
     private texts: Record<string, string>;
 
     public constructor(options: CLIAppOptions) {
@@ -242,20 +343,28 @@ class CLIApp extends CLICommandBuilder {
         this.program.addHelpCommand(false);
     }
 
+    /**
+     * Run the CLI app.
+     * Call when your CLI app has been completely configured over the main app.
+     */
     public run(): void {
         if (!this.hasAction) {
             this.program.action((options: any) => {
                 this.setCorrectLanguage(options);
+                this.outputHelpOnNoArgs();
             });
         }
         this.program.parse(this.processArgs);
     }
 
-    public command<TArguments, TLanguage>(
-        name: string,
-        description: string,
-        f: (cmd: CLICommandBuilder) => void
-    ): this {
+    /**
+     * Define a new sub-command.
+     *
+     * @param name The new sub-command name
+     * @param description The sub-command description, or translation key if a translator is used.
+     * @param f A callback to construct the newly defined sub-command.
+     */
+    public command(name: string, description: string, f: (cmd: CLICommandBuilder) => void): this {
         const newCmd = this.program
             .command(name)
             .description(this.translator ? this.translator.translate(description) : description);
@@ -264,6 +373,11 @@ class CLIApp extends CLICommandBuilder {
         return this;
     }
 
+    /**
+     * Set the language of the given commander app, to the default, or the given one.
+     *
+     * @param cmd The command to set to.
+     */
     private setLanguageIfConfigured(cmd: commander.Command): void {
         if (this.translator) {
             const language = this.getUserLocale();
@@ -282,6 +396,10 @@ class CLIApp extends CLICommandBuilder {
         }
     }
 
+    /**
+     * Retrieve the current user locale, as retrieved from the environment,
+     * or the arguments given by the user.
+     */
     private getUserLocale(): string {
         const envLocale = this.getUserEnvLocale();
         if (
@@ -299,6 +417,9 @@ class CLIApp extends CLICommandBuilder {
         return envLocale;
     }
 
+    /**
+     * Retrieve the current user locale, as retrieved from the environment.
+     */
     private getUserEnvLocale(): string {
         const env = process.env ?? {};
         // Retrieve locale from environment
@@ -323,4 +444,8 @@ class CLIApp extends CLICommandBuilder {
 }
 
 export type cli = CLIApp;
+/**
+ * Create a new CLI application.
+ * @param options The application options.
+ */
 export const cli = (options: CLIAppOptions): CLIApp => new CLIApp(options);
