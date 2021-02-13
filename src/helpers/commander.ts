@@ -37,6 +37,7 @@ interface CLIAppOptions {
         versionNumber: string;
         help: string;
         language?: string;
+        languageError?: string;
         tool: string;
         version: string;
     };
@@ -79,23 +80,24 @@ class CLICommandBuilder {
     private static LONG_OUTPUT_FLAG = '--out';
 
     protected program: commander.Command;
-    protected flags: CLIGeneralFlags;
-    protected translator: Translator<any>;
     protected hasAction: boolean = false;
     protected currentArgs: any[];
     protected currentOptions: any;
     protected onReadErrorMsg: string;
+    protected options: CLIAppOptions;
+    protected isSubcommand: boolean;
 
     public constructor(
         cmdrProgram: commander.Command,
-        translator?: Translator<any>,
-        flags?: CLIGeneralFlags
+        options: CLIAppOptions,
+        isSubcommand: boolean = false
     ) {
         this.program = cmdrProgram;
-        this.translator = translator;
+        this.options = Object.assign({}, options);
+        this.isSubcommand = isSubcommand;
 
         // Set default flags, or use custom ones
-        this.flags = flags ?? {
+        this.options.flags = options.flags ?? {
             help: {
                 short: CLICommandBuilder.SHORT_HELP_FLAG,
                 long: CLICommandBuilder.LONG_HELP_FLAG
@@ -128,8 +130,8 @@ class CLICommandBuilder {
     public input(description: string, onReadErrorMsg: string): this {
         this.onReadErrorMsg = onReadErrorMsg;
         this.program.option(
-            `${this.flags.in.short}, ${this.flags.in.long}, <filename>`,
-            this.translator ? this.translator.translate(description) : description
+            `${this.options.flags.in.short}, ${this.options.flags.in.long}, <filename>`,
+            this.options.translator ? this.options.translator.translate(description) : description
         );
         return this;
     }
@@ -141,8 +143,8 @@ class CLICommandBuilder {
      */
     public output(description: string): this {
         this.program.option(
-            `${this.flags.out.short}, ${this.flags.out.long}, <filename>`,
-            this.translator ? this.translator.translate(description) : description
+            `${this.options.flags.out.short}, ${this.options.flags.out.long}, <filename>`,
+            this.options.translator ? this.options.translator.translate(description) : description
         );
         return this;
     }
@@ -157,7 +159,7 @@ class CLICommandBuilder {
     public option(flags: string, description?: string, defaultValue?: string | boolean): this {
         this.program.option(
             flags,
-            this.translator ? this.translator.translate(description) : description,
+            this.options.translator ? this.options.translator.translate(description) : description,
             defaultValue
         );
         return this;
@@ -173,9 +175,10 @@ class CLICommandBuilder {
      */
     public action(f: (cliapp: this, ...args: any[]) => void): this {
         this.program.action((...options: any[]) => {
-            this.setCorrectLanguage(options);
-            this.currentArgs = options.slice(0, options.length - 1);
-            this.currentOptions = options[options.length - 1];
+            this.currentArgs =
+                options.length >= 2 ? options.slice(0, options.length - 2) : [options[0]];
+            this.currentOptions = options.length >= 2 ? options[options.length - 2] : options[1];
+            this.setCorrectLanguage(this.currentOptions.language);
             f(this, ...options);
         });
         this.hasAction = true;
@@ -220,8 +223,8 @@ class CLICommandBuilder {
     public readFileInput(fileName: string): string {
         this.ensureOrFailAndExit(
             fs.existsSync(fileName),
-            this.translator
-                ? this.translator.translate(this.onReadErrorMsg, { fileName })
+            this.options.translator
+                ? this.options.translator.translate(this.onReadErrorMsg, { fileName })
                 : this.onReadErrorMsg
         );
         return fs.readFileSync(fileName).toString();
@@ -265,7 +268,15 @@ class CLICommandBuilder {
      * Returns true if the command received no arguments nor flags
      */
     public hasNoArgs(): boolean {
-        return process.argv.slice(2).length > 0;
+        const sliced = process.argv.slice(this.isSubcommand ? 3 : 2);
+        if (sliced.length === 0) return true;
+        if (
+            sliced.length === 2 &&
+            (sliced[0] === this.options.flags.language.short ||
+                sliced[0] === this.options.flags.language.long)
+        )
+            return true;
+        return false;
     }
 
     /**
@@ -296,21 +307,26 @@ class CLICommandBuilder {
     }
 
     /** Set the correct language for this command */
-    protected setCorrectLanguage(options: any & { language: string }): void {
-        if (options.language) {
-            this.validateLanguageFlag(options.language);
-            this.translator.setLocale(options.language);
+    protected setCorrectLanguage(language?: string): void {
+        if (language) {
+            this.validateLanguageFlag(language);
+            this.options.translator.setLocale(language);
         }
     }
 
     /** Validate that the given language flag, if any, is a valid translation */
     protected validateLanguageFlag(locale: string): void {
-        const availableLangs = Object.keys(this.translator.getAvailableTranslations())
+        const availableLangs = Object.keys(this.options.translator.getAvailableTranslations())
             .map((e) => '"' + e + '"')
             .join(' | ');
         this.ensureOrFailAndExit(
-            this.translator.hasLocale(locale),
-            this.translator.translate('cli.errors.language', { locale, availableLangs })
+            this.options.translator.hasLocale(locale),
+            this.options.translator
+                ? this.options.translator.translate(this.options.texts.languageError, {
+                      locale,
+                      availableLangs
+                  })
+                : this.options.texts.languageError
         );
     }
 }
@@ -318,27 +334,29 @@ class CLICommandBuilder {
 class CLIApp extends CLICommandBuilder {
     /** The arguments passed to the application */
     private processArgs: string[];
-    /** The texts being used as messages */
-    private texts: Record<string, string>;
 
     public constructor(options: CLIAppOptions) {
-        super(program, options.translator, options.flags);
+        super(program, options);
         this.processArgs = process.argv;
-        this.texts = options.texts;
 
+        this.setCorrectLanguage(this.getUserEnvLocale());
         this.setLanguageIfConfigured(this.program);
 
         // Set up the program
-        this.program.name(this.texts.name);
+        this.program.name(this.options.texts.name);
         this.program.version(
-            this.texts.versionNumber,
-            `${this.flags.version.short}, ${this.flags.version.long}`,
-            this.translator ? this.translator.translate(this.texts.version) : this.texts.version
+            this.options.texts.versionNumber,
+            `${this.options.flags.version.short}, ${this.options.flags.version.long}`,
+            this.options.translator
+                ? this.options.translator.translate(this.options.texts.version)
+                : this.options.texts.version
         );
 
         this.program.helpOption(
-            `${this.flags.help.short}, ${this.flags.help.long}`,
-            this.translator ? this.translator.translate(this.texts.help) : this.texts.help
+            `${this.options.flags.help.short}, ${this.options.flags.help.long}`,
+            this.options.translator
+                ? this.options.translator.translate(this.options.texts.help)
+                : this.options.texts.help
         );
         this.program.addHelpCommand(false);
     }
@@ -350,7 +368,7 @@ class CLIApp extends CLICommandBuilder {
     public run(): void {
         if (!this.hasAction) {
             this.program.action((options: any) => {
-                this.setCorrectLanguage(options);
+                this.setCorrectLanguage(options.language);
                 this.outputHelpOnNoArgs();
             });
         }
@@ -367,9 +385,13 @@ class CLIApp extends CLICommandBuilder {
     public command(name: string, description: string, f: (cmd: CLICommandBuilder) => void): this {
         const newCmd = this.program
             .command(name)
-            .description(this.translator ? this.translator.translate(description) : description);
+            .description(
+                this.options.translator
+                    ? this.options.translator.translate(description)
+                    : description
+            );
         this.setLanguageIfConfigured(newCmd);
-        f(new CLICommandBuilder(newCmd, this.translator, this.flags));
+        f(new CLICommandBuilder(newCmd, this.options, true));
         return this;
     }
 
@@ -379,18 +401,19 @@ class CLIApp extends CLICommandBuilder {
      * @param cmd The command to set to.
      */
     private setLanguageIfConfigured(cmd: commander.Command): void {
-        if (this.translator) {
+        if (this.options.translator) {
             const language = this.getUserLocale();
-            this.translator.setLocale(language);
+            this.setCorrectLanguage(language);
 
-            const availableLangs = Object.keys(this.translator.getAvailableTranslations())
+            const availableLangs = Object.keys(this.options.translator.getAvailableTranslations())
                 .map((e) => '"' + e + '"')
                 .join(' | ');
 
             // Language flag is only set when a translator is being used.
             cmd.option(
-                `${this.flags.language.short}, ${this.flags.language.long}, <locale>`,
-                this.translator.translate(this.texts.language, { availableLangs }),
+                // eslint-disable-next-line max-len
+                `${this.options.flags.language.short}, ${this.options.flags.language.long}, <locale>`,
+                this.options.translator.translate(this.options.texts.language, { availableLangs }),
                 language
             );
         }
@@ -403,13 +426,13 @@ class CLIApp extends CLICommandBuilder {
     private getUserLocale(): string {
         const envLocale = this.getUserEnvLocale();
         if (
-            this.processArgs.indexOf(this.flags.language.short) >= 0 ||
-            this.processArgs.indexOf(this.flags.language.long) >= 0
+            this.processArgs.indexOf(this.options.flags.language.short) >= 0 ||
+            this.processArgs.indexOf(this.options.flags.language.long) >= 0
         ) {
             const langIndex =
-                this.processArgs.indexOf(this.flags.language.short) >= 0
-                    ? this.processArgs.indexOf(this.flags.language.short)
-                    : this.processArgs.indexOf(this.flags.language.long);
+                this.processArgs.indexOf(this.options.flags.language.short) >= 0
+                    ? this.processArgs.indexOf(this.options.flags.language.short)
+                    : this.processArgs.indexOf(this.options.flags.language.long);
             return this.processArgs.length > langIndex
                 ? this.processArgs[langIndex + 1]
                 : envLocale;
@@ -434,12 +457,12 @@ class CLIApp extends CLICommandBuilder {
         // Now check for each language in the list if such a locale exists
         if (localeList.length > 0) {
             for (const each of localeList) {
-                if (this.translator.hasLocale(each)) {
+                if (this.options.translator.hasLocale(each)) {
                     return each;
                 }
             }
         }
-        return this.translator.getDefaultLocale();
+        return this.options.translator.getDefaultLocale();
     }
 }
 
