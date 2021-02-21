@@ -1,7 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { deepEquals } from '../../src/helpers/deepEquals';
-import { given } from 'jest-rspec-utils';
+
+const given = describe;
 
 describe(`deepEquals`, () => {
     given('equal elements of simple types', () => {

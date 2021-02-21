@@ -1,6 +1,17 @@
+/**
+ * This module provides the tools to create a CLI application
+ * using commander as the background tool, but providing some
+ * simple abstractions. The CLI produce may automatically support
+ * multiple languages, input and output from and to files as well
+ * as stdout, and other perks.
+ *
+ * @author Alan Rodas Bonjour <alanrodas@gmail.com>
+ *
+ * @packageDocumentation
+ */
 import commander, { program } from 'commander';
 
-import { Translator } from '../Translations';
+import { Translator } from './Translations';
 import fs from 'fs';
 
 /**

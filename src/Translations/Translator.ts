@@ -72,7 +72,7 @@ export class Translator<TLocale> {
         if (!availableTranslations[defaultLocale]) {
             throw new Error(`The default translation must be one of the translations available`);
         }
-        this.availableTranslations = availableTranslations ?? {};
+        this.availableTranslations = availableTranslations;
         this.defaultLocale = defaultLocale;
         this.flatten = shouldFlat;
         this.setLocale(currentLocale ?? defaultLocale);

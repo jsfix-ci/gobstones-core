@@ -14,5 +14,6 @@ module.exports = {
             lines: 80,
             statements: -10
         }
-    }
+    },
+    testPathIgnorePatterns: ['<rootDir>/src/test.ts']
 };

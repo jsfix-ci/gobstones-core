@@ -1,7 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { expect as assert } from '../../src/Expectations';
-import { given } from 'jest-rspec-utils';
+
+const given = describe;
 
 describe('INumericExpectation', () => {
     describe('toBeGreaterThan', () => {

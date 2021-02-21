@@ -1,7 +1,9 @@
 import { describe, expect, it } from '@jest/globals';
 
+import { IObjectExpectation } from '../../src/Expectations/Interfaces';
 import { expect as assert } from '../../src/Expectations';
-import { given } from 'jest-rspec-utils';
+
+const given = describe;
 
 describe('IObjectExpectation', () => {
     describe('toHavePropertyCount', () => {
@@ -109,6 +111,25 @@ describe('IObjectExpectation', () => {
         });
     });
     describe('toHaveAtLeast', () => {
+        given('actual is a simple type', () => {
+            it('Should have false result', () => {
+                expect(
+                    ((assert(7) as unknown) as IObjectExpectation<any>)
+                        .toHaveAtLeast(['a'])
+                        .getResult()
+                ).toBe(false);
+                expect(
+                    ((assert('hello world') as unknown) as IObjectExpectation<any>)
+                        .toHaveAtLeast(['a'])
+                        .getResult()
+                ).toBe(false);
+                expect(
+                    ((assert(false) as unknown) as IObjectExpectation<any>)
+                        .toHaveAtLeast(['a'])
+                        .getResult()
+                ).toBe(false);
+            });
+        });
         given('actual has at least the expected set of properties', () => {
             it('Should have true result', () => {
                 expect(assert({ a: 'hello', b: 5 }).toHaveAtLeast(['a']).getResult()).toBe(true);
@@ -160,6 +181,25 @@ describe('IObjectExpectation', () => {
         );
     });
     describe('toHaveNoOtherThan', () => {
+        given('actual is a simple type', () => {
+            it('Should have false result', () => {
+                expect(
+                    ((assert(7) as unknown) as IObjectExpectation<any>)
+                        .toHaveNoOtherThan(['a'])
+                        .getResult()
+                ).toBe(false);
+                expect(
+                    ((assert('hello world') as unknown) as IObjectExpectation<any>)
+                        .toHaveNoOtherThan(['a'])
+                        .getResult()
+                ).toBe(false);
+                expect(
+                    ((assert(false) as unknown) as IObjectExpectation<any>)
+                        .toHaveNoOtherThan(['a'])
+                        .getResult()
+                ).toBe(false);
+            });
+        });
         given('actual has no other property than the ones expected', () => {
             it('Should have true result', () => {
                 expect(assert({ a: 'hello', b: 5 }).toHaveNoOtherThan(['a', 'b']).getResult()).toBe(

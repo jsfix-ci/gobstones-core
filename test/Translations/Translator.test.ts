@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it } from '@jest/globals';
 
 import { Translator } from '../../src/Translations/Translator';
-import { given } from 'jest-rspec-utils';
+
+const given = describe;
 
 interface Locale {
     msg1: string;
