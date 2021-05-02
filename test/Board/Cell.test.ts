@@ -34,6 +34,27 @@ describe(`Cell`, () => {
         originCell = board.getCell(0, 0);
     });
 
+    it(`Clones as another cell correctly`, () => {
+        const newCornerCell = cornerCell.clone();
+        expect(newCornerCell).not.toBe(cornerCell);
+        expect(newCornerCell.x).toBe(cornerCell.x);
+        expect(newCornerCell.y).toBe(cornerCell.y);
+        expect(newCornerCell.getStonesOf(Color.Blue)).toBe(cornerCell.getStonesOf(Color.Blue));
+        expect(newCornerCell.getStonesOf(Color.Black)).toBe(cornerCell.getStonesOf(Color.Black));
+        expect(newCornerCell.getStonesOf(Color.Red)).toBe(cornerCell.getStonesOf(Color.Red));
+        expect(newCornerCell.getStonesOf(Color.Green)).toBe(cornerCell.getStonesOf(Color.Green));
+
+        const newHeadCell = headCell.clone(board);
+        expect(newHeadCell).not.toBe(headCell);
+        expect(newHeadCell.x).toEqual(headCell.x);
+        expect(newHeadCell.y).toEqual(headCell.y);
+        expect(newHeadCell.getStonesOf(Color.Blue)).toEqual(headCell.getStonesOf(Color.Blue));
+        expect(newHeadCell.getStonesOf(Color.Black)).toEqual(headCell.getStonesOf(Color.Black));
+        expect(newHeadCell.getStonesOf(Color.Red)).toEqual(headCell.getStonesOf(Color.Red));
+        expect(newHeadCell.getStonesOf(Color.Green)).toEqual(headCell.getStonesOf(Color.Green));
+        expect(newHeadCell.isHeadLocation()).toBe(true);
+    });
+
     it(`Answers with the correct location as within the board`, () => {
         expect(headCell.x).toBe(2);
         expect(headCell.y).toBe(3);

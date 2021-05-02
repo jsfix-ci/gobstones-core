@@ -1,3 +1,18 @@
+import { BoardDefinition, CellDataDefinition, CellLocation } from './BoardDefinition';
+import {
+    InvalidBoardDescription,
+    InvalidCellReading,
+    InvalidSizeChange,
+    InvalidSizeChangeAttempt,
+    LocationChangeActionAttempt,
+    LocationFallsOutsideBoard
+} from './BoardErrors';
+
+import { Cell } from './Cell';
+import { Color } from './Color';
+import { Direction } from './Direction';
+import { Matrix } from '../helpers/matrix';
+import { TypedEmitter } from '../TypedEmitter';
 /**
  * This module provides the [[Board]] class, which models a Gobstones Board
  * and all the associated behavior.
@@ -12,20 +27,6 @@
  * @packageDocumentation
  */
 import { expect } from '../Expectations';
-import { Matrix } from '../helpers/matrix';
-import { TypedEmitter } from '../TypedEmitter';
-import { BoardDefinition, CellLocation, CellDataDefinition } from './BoardDefinition';
-import {
-    InvalidBoardDescription,
-    InvalidCellReading,
-    LocationFallsOutsideBoard,
-    LocationChangeActionAttempt,
-    InvalidSizeChangeAttempt,
-    InvalidSizeChange
-} from './BoardErrors';
-import { Cell } from './Cell';
-import { Color } from './Color';
-import { Direction } from './Direction';
 
 /**
  * This object contains the default values for a [[Board]].
@@ -296,7 +297,36 @@ export class Board extends TypedEmitter<BoardEvents> implements BoardDefinition 
         );
     }
 
+    /* ************* Cloning ************** */
+
+    /**
+     * Clone this board, returning a new one with the same characteristics.
+     *
+     * @returns A new Board.
+     */
+    public clone(): Board {
+        const cellStates = this.foldCells((cells, cell) => {
+            cells.push({
+                x: cell.x,
+                y: cell.y,
+                [Color.Blue]: cell.getStonesOf(Color.Blue),
+                [Color.Black]: cell.getStonesOf(Color.Black),
+                [Color.Red]: cell.getStonesOf(Color.Red),
+                [Color.Green]: cell.getStonesOf(Color.Green)
+            });
+            return cells;
+        }, []);
+        return new Board(this.width, this.height, this.head, cellStates);
+    }
+
     /* ************* Accessors ************** */
+
+    /**
+     * Useful to test is an untyped object is a board. Returns true for any board.
+     */
+    public get isBoard(): boolean {
+        return true;
+    }
 
     /**
      * The board format. Always: GBB/1.0 as it's derived from the GBB format.

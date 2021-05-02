@@ -30,6 +30,30 @@ describe(`Board`, () => {
         );
     });
 
+    it(`Clones as another board correctly`, () => {
+        const newBoard = board.clone();
+
+        expect(newBoard).not.toBe(board);
+        expect(newBoard.width).toBe(board.width);
+        expect(newBoard.height).toBe(board.height);
+        expect(newBoard.headX).toBe(board.headX);
+        expect(newBoard.headY).toBe(board.headY);
+        newBoard.foreachCells((cell, j, i) => {
+            expect(cell.getStonesOf(Color.Blue)).toBe(board.getCell(i, j).getStonesOf(Color.Blue));
+            expect(cell.getStonesOf(Color.Black)).toBe(
+                board.getCell(i, j).getStonesOf(Color.Black)
+            );
+            expect(cell.getStonesOf(Color.Red)).toBe(board.getCell(i, j).getStonesOf(Color.Red));
+            expect(cell.getStonesOf(Color.Green)).toEqual(
+                board.getCell(i, j).getStonesOf(Color.Green)
+            );
+        });
+    });
+
+    it(`Answers that it's a board`, () => {
+        expect(board.isBoard).toBe(true);
+    });
+
     it(`Answers it's format correctly`, () => {
         expect(board.format).toBe('GBB/1.0');
     });

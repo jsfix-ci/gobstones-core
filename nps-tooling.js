@@ -2,7 +2,7 @@
 const npsUtils = require('nps-utils');
 const path = require('path');
 
-const stripIndent = npsUtils.stripIndent;
+const stripIndent = npsUtils.commonTags.stripIndent;
 const rimraf = npsUtils.rimraf;
 const ifNotWindows = npsUtils.ifNotWindows;
 const ncp = npsUtils.copy;

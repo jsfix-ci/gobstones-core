@@ -1,5 +1,3 @@
-import { MatcherCall, Matchers } from './Matchers';
-
 /**
  * This module provides the [[Expectation]] class that implements
  * all interfaces for expectations.
@@ -8,6 +6,8 @@ import { MatcherCall, Matchers } from './Matchers';
  *
  * @packageDocumentation
  */
+import { MatcherCall, Matchers } from './Matchers';
+
 import { FinishedExpectation } from './FinishedExpectation';
 import { IFinishedExpectation } from './Interfaces';
 

@@ -140,6 +140,26 @@ export class Cell extends TypedEmitter<CellEvents> implements CellInfo {
         this.greenStones = cellInfo[Color.Green] ?? Defaults[Color.Green];
     }
 
+    /* ************* Cloning ************** */
+
+    /**
+     * Clone this cell. Pass a board in order to set the
+     * associated board of the cloned cell to that element.
+     *
+     * @param cloneBoard The Board the cloned cell will be associated to.
+     * @returns A new [[Cell]]
+     */
+    public clone(newBoard?: Board): Cell {
+        return new Cell(newBoard, {
+            x: this.x,
+            y: this.y,
+            [Color.Blue]: this.getStonesOf(Color.Blue),
+            [Color.Black]: this.getStonesOf(Color.Black),
+            [Color.Red]: this.getStonesOf(Color.Red),
+            [Color.Green]: this.getStonesOf(Color.Green)
+        });
+    }
+
     /* ************* Accessors ************** */
 
     /**

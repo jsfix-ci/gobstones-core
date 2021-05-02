@@ -151,4 +151,34 @@ export class Translator<TLocale> {
         }
         return value;
     }
+
+    /**
+     * Translate a specific key to the currently used locale, by selecting the
+     * corresponding pluralization, determined by the amount given and replacing
+     * any interpolation matchers by the given interpolations.
+     * Pluralization is selected based on the las part of the key in such a form
+     * that it contains the amount as part of the key, or "n" for other number.
+     * .e.g. given the key "test.key" plurals attempt to match "test.key.0",
+     * "test.key.1" and so on, or "test.key.n".
+     *
+     * @param amount The amount given for pluralization
+     * @param key The key to use to obtain the translated text
+     * @param interpolations If given, keys of this object will be used
+     *      to replace any interpolation matcher in the translated text
+     *      (any text in ${}) by the value of the corresponding key.
+     *
+     * @returns A translated string
+     */
+    public pluralize(amount: number, key: string, interpolations?: Record<string, any>): string {
+        if (amount % 1 !== amount) {
+            throw new Error('pluralization can only be used for integers');
+        }
+        if (this.currentLocale[key + '.' + amount.toString()]) {
+            return this.translate(this.currentLocale[key + amount.toString()], interpolations);
+        }
+        if (this.currentLocale[key + '.n']) {
+            return this.translate(this.currentLocale[key + amount.toString()], interpolations);
+        }
+        return key;
+    }
 }
